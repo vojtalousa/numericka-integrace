@@ -17,7 +17,8 @@ export default function Text(chart: Chart) {
       d.fnType = 'vector'
 
       const innerSelection = d3Select(this).selectAll(':scope > text.fn-text').data([d.location])
-      const innerSelectionEnter = innerSelection.enter().append('text').attr('class', `fn-text fn-text-${d.index}`)
+      const cls = `fn-text fn-text-${d.index}`
+      const innerSelectionEnter = innerSelection.enter().append('text').attr('class', cls)
 
       const computeColor = color(d, d.index)
 
@@ -31,13 +32,20 @@ export default function Text(chart: Chart) {
 
       if (d.attr) {
         for (const k in d.attr) {
-          selection.attr(k, d.attr[k])
+          // If the attribute to modify is class then append the default class
+          // or otherwise the d3 selection won't work.
+          let val = d.attr[k]
+          if (k === 'class') {
+            val = `${cls} ${d.attr[k]}`
+          }
+          selection.attr(k, val)
         }
       }
 
       if (d.background?.enabled) {
         const innerBackground = d3Select(this).selectAll(':scope > rect.fn-text-background').data([d.location])
-        const innerBackgroundEnter = innerBackground.enter().append('rect').lower().attr('class', `fn-text-background fn-text-background-${d.index}`)
+        const rectCls = `fn-text-background fn-text-background-${d.index}`
+        const innerBackgroundEnter = innerBackground.enter().append('rect').lower().attr('class', rectCls)
 
         const text = d3Select(this).select('text.fn-text')
         const { x, y, width, height } = text.node().getBBox()
@@ -54,7 +62,13 @@ export default function Text(chart: Chart) {
 
         if (d.background.attr) {
           for (const k in d.background.attr) {
-            background.attr(k, d.background.attr[k])
+            // If the attribute to modify is class then append the default class
+            // or otherwise the d3 selection won't work.
+            let val = d.background.attr[k]
+            if (k === 'class') {
+              val = `${rectCls} ${d.background.attr[k]}`
+            }
+            background.attr(k, val)
           }
         }
 

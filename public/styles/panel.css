@@ -62,7 +62,7 @@ input[type="text"], input[type="number"], select, .result-text {
 }
 
 .has-unit:after {
-    content: url('img/unit.svg');
+    content: url('/img/unit.svg');
     position: absolute;
     right: 8px;
 }

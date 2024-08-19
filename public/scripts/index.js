@@ -1,5 +1,5 @@
 const fn = 'x^2'
-functionPlot({
+const chart = functionPlot({
     width: window.innerWidth,
     height: window.innerHeight,
     target: '#graph',
@@ -17,8 +17,7 @@ functionPlot({
             graphType: 'text',
             attr: {
                 id: 'limit-right-label',
-                // unlike for any other graph type, the class attribute is replaced, not appended
-                class: 'fn-text limit-label',
+                class: 'limit-label',
                 dy: 15,
             },
             location: [-2, 0],

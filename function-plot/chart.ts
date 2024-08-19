@@ -700,6 +700,14 @@ export class Chart extends EventEmitter.EventEmitter {
     return Math.max(Math.max(this.meta.width, this.meta.height) / 50, 8)
   }
 
+  /**
+   * Returns a reference to the datum with the given id.
+   * @param id
+   */
+  get(id: string) {
+    return this.options.data.find((d) => d.attr.id === id)
+  }
+
   draw() {
     const instance = this
     instance.emit('before:draw')
