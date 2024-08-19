@@ -264,7 +264,9 @@ export class Chart extends EventEmitter.EventEmitter {
     if (!this.meta.yAxis) {
       this.meta.yAxis = d3AxisLeft(this.meta.yScale)
     }
-    this.meta.yAxis.tickSize(this.options.grid ? -this.meta.width : 0).tickFormat(formatter)
+    const bothAxisSticky = this.options.x.position === 'sticky' && this.options.y.position === 'sticky'
+    const blockZero = (x) => x === 0 ? '' : formatter(x)
+    this.meta.yAxis.tickSize(this.options.grid ? -this.meta.width : 0).tickFormat(bothAxisSticky ? blockZero : formatter)
 
     this.line = d3Line()
       .x(function (d) {
@@ -577,7 +579,6 @@ export class Chart extends EventEmitter.EventEmitter {
 
     if (!this.meta.zoomBehavior) {
       this.meta.zoomBehavior = d3Zoom().on('zoom', function onZoom(ev) {
-        console.log('zoom', ev)
         self.getEmitInstance().emit('all:zoom', ev)
       })
       // the zoom behavior must work with a copy of the scale, the zoom behavior has its own state and assumes
@@ -818,6 +819,14 @@ export class Chart extends EventEmitter.EventEmitter {
           }
         })
       }
+    }
+
+    if (this.options.fullscreen) {
+      window.addEventListener('resize', () => {
+        this.options.width = window.innerWidth
+        this.options.height = window.innerHeight
+        this.build()
+      })
     }
   }
 

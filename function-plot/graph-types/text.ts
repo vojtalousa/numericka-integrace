@@ -35,6 +35,32 @@ export default function Text(chart: Chart) {
         }
       }
 
+      if (d.background?.enabled) {
+        const innerBackground = d3Select(this).selectAll(':scope > rect.fn-text-background').data([d.location])
+        const innerBackgroundEnter = innerBackground.enter().append('rect').lower().attr('class', `fn-text-background fn-text-background-${d.index}`)
+
+        const text = d3Select(this).select('text.fn-text')
+        const { x, y, width, height } = text.node().getBBox()
+
+        const background = innerBackground
+          .merge(innerBackgroundEnter)
+          .attr('x', x - (d.background.margin?.x || 0))
+          .attr('y', y - (d.background.margin?.y || 0))
+          .attr('width', width + ((d.background.margin?.x * 2) || 0))
+          .attr('height', height + ((d.background.margin?.y * 2) || 0))
+          .attr('fill', 'white')
+          .attr('fill-opacity', 0.8)
+          .attr('stroke', 'black')
+
+        if (d.background.attr) {
+          for (const k in d.background.attr) {
+            background.attr(k, d.background.attr[k])
+          }
+        }
+
+        background.exit().remove()
+      }
+
       // exit
       innerSelection.exit().remove()
     })
