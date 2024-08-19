@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Interaktivní Numerická Integrace</title>
+    <link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+<div id="graph" class="graph"></div>
+<div class="panels-container">
+    <form class="panel" id="input-form">
+        <label for="function-input">Function</label>
+        <input type="text" id="function-input">
+        <label for="segments-input">Segments</label>
+        <input type="number" min="1" id="segments-input">
+        <label for="integration-method">Integration method</label>
+        <select id="integration-method"></select>
+        <div class="limit-inputs">
+            <div>
+                <label for="limit-left">Left limit</label>
+                <input type="number" step="any" id="limit-left">
+            </div>
+            <div>
+                <label for="limit-right">Right limit</label>
+                <input type="number" step="any" id="limit-right">
+            </div>
+        </div>
+    </form>
+    <div class="results panel">
+        <p class="label">Approximation Result</p>
+        <p class="result-text has-unit" id="approximation"></p>
+        <p class="label">Actual Result</p>
+        <p class="result-text has-unit" id="result"></p>
+        <p class="label">Relative Error</p>
+        <p class="result-text" id="error"></p>
+    </div>
+</div>
+<script src="http://localhost:8080/function-plot.js"></script>
+<script src="scripts/index.js"></script>
+</body>
+</html>
