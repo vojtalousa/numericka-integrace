@@ -4,42 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Interaktivní Numerická Integrace</title>
+    <title>Interactive Numerical Integration</title>
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/panel.css">
+    <link rel="stylesheet" href="styles/chart.css">
 </head>
 <body>
-<div id="graph" class="graph"></div>
+<div id="chart" class="chart"></div>
 <div class="panels-container">
-    <form class="panel" id="input-form">
+    <form class="options panel" id="options-form">
         <label for="function-input">Function</label>
-        <input type="text" id="function-input">
+        <input type="text" name="function" id="function-input">
         <label for="segments-input">Segments</label>
-        <input type="number" min="1" id="segments-input">
+        <input type="number" min="1" name="segments" id="segments-input">
         <label for="integration-method">Integration method</label>
-        <select id="integration-method"></select>
+        <select id="integration-method" name="method">
+            <option value="midpoint">Midpoint</option>
+            <option value="trapezoidal">Trapezoidal</option>
+            <option value="simpsons">Simpson's</option>
+            <option value="gauss">Gauss-Legendre</option>
+        </select>
         <div class="limit-inputs">
             <div>
-                <label for="limit-left">Left limit</label>
-                <input type="number" step="any" id="limit-left">
+                <label for="limit-lower">Lower limit</label>
+                <input type="number" step="any" name="lower" id="limit-lower">
             </div>
             <div>
-                <label for="limit-right">Right limit</label>
-                <input type="number" step="any" id="limit-right">
+                <label for="limit-upper">Upper limit</label>
+                <input type="number" step="any" name="upper" id="limit-upper">
             </div>
         </div>
     </form>
-    <div class="results panel">
-        <p class="label">Approximation Result</p>
-        <p class="result-text has-unit" id="approximation"></p>
-        <p class="label">Actual Result</p>
-        <p class="result-text has-unit" id="result"></p>
-        <p class="label">Relative Error</p>
-        <p class="result-text" id="error"></p>
+    <div class="results-container">
+        <button id="open-options-button">Options</button>
+        <div class="results panel">
+            <p class="label">Approximation Result</p>
+            <p class="result-text has-unit" id="approximation"></p>
+            <p class="label">Actual Result</p>
+            <p class="result-text has-unit" id="result"></p>
+            <p class="label">Relative Error</p>
+            <p class="result-text" id="error"></p>
+        </div>
     </div>
 </div>
 <script src="dist/math-js-integral.js"></script>
 <script src="dist/function-plot.js"></script>
-<script src="scripts/index.js"></script>
+<script src="scripts/chart.js" type="module"></script>
+<script src="scripts/integration.js" type="module"></script>
+<script src="scripts/options.js" type="module"></script>
+<script src="scripts/draggable.js" type="module"></script>
 </body>
 </html>

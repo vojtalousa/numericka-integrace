@@ -93,6 +93,11 @@ export default function annotations(options: { owner: Chart }) {
           return 'translate(0, ' + yScale(d.y) + ')'
         }
       })
+      // set path dasharray offset same as translate offset
+      selection
+          .merge(enter)
+          .selectAll('path')
+          .attr('stroke-dashoffset', function () { return yScale(0) })
 
       // exit
       selection.exit().remove()

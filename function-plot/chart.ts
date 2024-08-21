@@ -179,7 +179,7 @@ export class Chart extends EventEmitter.EventEmitter {
     const margin = this.options.fullscreen ? { left: 0, right: 0, top: 0, bottom: 0 } : { left: 40, right: 20, top: 20, bottom: 20 }
     this.meta.margin = margin
     // if there's a title make the top margin bigger
-    if (this.options.title) {
+    if (!this.options.fullscreen && this.options.title) {
       this.meta.margin.top = 40
     }
     // inner width/height
@@ -294,8 +294,10 @@ export class Chart extends EventEmitter.EventEmitter {
       .attr('width', this.meta.width + this.meta.margin.left + this.meta.margin.right)
       .attr('height', this.meta.height + this.meta.margin.top + this.meta.margin.bottom)
 
-    this.buildTitle()
-    this.buildLegend()
+    if (!this.options.fullscreen) {
+      this.buildTitle()
+      this.buildLegend()
+    }
     this.buildCanvas()
     this.buildClip()
     this.buildAxis()
@@ -361,7 +363,10 @@ export class Chart extends EventEmitter.EventEmitter {
         return [d]
       }))
 
-    this.canvas.enter = canvas.enter().append('g').attr('class', 'canvas')
+    this.canvas.enter = canvas.enter().append('g')
+        .attr('class', 'canvas')
+        .style('pointer-events', 'none')
+        .style('user-select', 'none')
 
     // enter + update
   }
@@ -547,7 +552,7 @@ export class Chart extends EventEmitter.EventEmitter {
         },
         (d: any) => {
           // The key is the function set or other value that uniquely identifies the datum.
-          return d.fn || d.r || d.x || d.text
+          return d.fn || d.r || d.x || d.text || d.attr?.id
         }
       )
 
@@ -599,6 +604,7 @@ export class Chart extends EventEmitter.EventEmitter {
     // enter
     this.canvas.enter
       .append('rect')
+      .lower()
       .call(this.meta.zoomBehavior)
       .attr('class', 'zoom-and-drag')
       .style('fill', 'none')
@@ -700,14 +706,6 @@ export class Chart extends EventEmitter.EventEmitter {
     return Math.max(Math.max(this.meta.width, this.meta.height) / 50, 8)
   }
 
-  /**
-   * Returns a reference to the datum with the given id.
-   * @param id
-   */
-  get(id: string) {
-    return this.options.data.find((d) => d.attr.id === id)
-  }
-
   draw() {
     const instance = this
     instance.emit('before:draw')
@@ -762,6 +760,8 @@ export class Chart extends EventEmitter.EventEmitter {
       },
 
       'tip:update': function ({ x, y, index }: any) {
+        if (this.fullscreen) return
+
         const meta = self.root.merge(self.root.enter).datum().data[index]
         const title = meta.title || ''
         const format =

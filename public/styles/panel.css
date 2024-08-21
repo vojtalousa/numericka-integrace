@@ -14,6 +14,7 @@
     display: flex;
     flex-direction: column;
     border-radius: 25px;
+    border: 2px solid #46464647;
 }
 
 .limit-inputs {
@@ -53,7 +54,12 @@ input[type="text"], input[type="number"], select, .result-text {
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     margin: 0 0 8px 0;
+}
+
+#error {
+    margin-bottom: 2px;
 }
 
 .has-unit {
@@ -65,4 +71,74 @@ input[type="text"], input[type="number"], select, .result-text {
     content: url('/img/unit.svg');
     position: absolute;
     right: 8px;
+}
+
+#open-options-button {
+    display: none;
+    outline: none;
+    background-color: #F6F6F6;
+    color: black;
+    border: 1px solid #46464647;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    align-self: end;
+    margin-right: 5px;
+}
+
+.options.open {
+    display: block;
+}
+
+@media screen and (max-width: 800px) {
+    .panels-container {
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    .panel {
+        padding: 15px 15px;
+        border-width: 1px;
+        border-radius: 0;
+        pointer-events: all;
+    }
+
+    .results-container {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .options {
+        display: none;
+    }
+
+    #open-options-button {
+        display: block;
+        pointer-events: all;
+    }
+
+    #error {
+        margin-bottom: 0;
+    }
+
+    label, .label {
+        font-size: 16px;
+    }
+
+    input[type="text"], input[type="number"], select, .result-text {
+        font-size: 16px;
+    }
 }

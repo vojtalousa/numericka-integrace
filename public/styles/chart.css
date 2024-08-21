@@ -1,0 +1,80 @@
+.inner-tip circle, .inner-tip text {
+    fill: black;
+    font-size: 22px;
+}
+
+.tick text {
+    font-size: 14px;
+    font-weight: 500;
+    fill: #414141;
+}
+
+.function-plot {
+    user-select: none;
+}
+
+.graph {
+    pointer-events: none;
+}
+
+#function {
+    stroke-width: 4;
+    stroke: #136DFB;
+}
+
+.limit-label-background {
+    fill: #FFFFFF;
+    stroke: #46464647;
+    stroke-width: 2px;
+    fill-opacity: 1;
+    filter: drop-shadow(0px 0px 25px rgba(0, 0, 0, 0.2));
+}
+
+.limit-label {
+    fill: black;
+    text-anchor: middle;
+    dominant-baseline: hanging;
+    font-weight: 600;
+    font-size: 19px;
+}
+
+.limit-handle {
+    cursor: pointer;
+    pointer-events: all;
+    fill: white;
+    stroke: #919191;
+    stroke-width: 3px;
+    opacity: 1;
+    filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.6))
+}
+
+#integral-odd {
+    fill-opacity: 0.7;
+    fill: #868686;
+    stroke: white;
+    stroke-opacity: 0.6;
+    stroke-width: 3px;
+}
+
+#integral-even {
+    fill-opacity: 0.7;
+    fill: #C8C8C8;
+    stroke: white;
+    stroke-opacity: 0.6;
+    stroke-width: 3px;
+}
+
+#touch-points {
+    fill: white;
+    stroke: #8b8b8b;
+    stroke-width: 3px;
+    opacity: 1;
+}
+
+.annotations path {
+    stroke-width: 3px;
+    stroke: #bdbdbd;
+    stroke-dasharray: 30 20;
+    stroke-linecap: round;
+    opacity: 1;
+}

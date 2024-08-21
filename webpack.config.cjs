@@ -29,9 +29,8 @@ module.exports = [
                 '.mjs': ['.mts', '.mjs']
             }
         },
-        optimization: {
-            usedExports: true,
-        },
+        optimization: { usedExports: true },
+        devServer: { client: { overlay: false } }
     },
     {
         mode: 'production',
@@ -45,8 +44,6 @@ module.exports = [
                 export: 'default'
             }
         },
-        optimization: {
-            usedExports: true,
-        },
+        optimization: { usedExports: true }
     }
 ]
