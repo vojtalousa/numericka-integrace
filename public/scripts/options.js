@@ -86,6 +86,14 @@ Array.from(inputs).forEach(input => {
     })
 })
 
-document.getElementById('open-options-button').addEventListener('click', () => {
+let optionsOpen = false
+const results = document.getElementById('results')
+const openOptionsButton = document.getElementById('open-options-button')
+openOptionsButton.addEventListener('click', () => {
+    if (optionsOpen) openOptionsButton.innerText = 'Open options'
+    else openOptionsButton.innerText = 'Close options'
+    optionsOpen = !optionsOpen
+
     form.classList.toggle('open')
+    results.classList.toggle('open')
 })

@@ -86,7 +86,10 @@ const chartOptions = {
 
 export const fnEval = (x) => functionPlot.$eval.builtIn({ fn: options.fn }, 'fn', { x })
 export const chart = functionPlot(chartOptions);
-export const draw = () => functionPlot(chartOptions)
+export const draw = () => {
+    chart.options = chartOptions
+    chart.draw()
+}
 export const setAnnotations = (annotations) => chartOptions.annotations = annotations
 export const graph = (id) => {
     const index = chartOptions.data.findIndex(d => d.attr.id === id)

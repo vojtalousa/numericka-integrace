@@ -4,12 +4,14 @@ import computeGaussAbscissas from "./gauss.js";
 const integration = {
     midpoint: (limits, segments, segmentWidth, doVisualization) => {
         const vertices = { odd: [], even: [] }
+        const touchPoints = []
         let approximation = 0
         for (let i = 0; i < segments; i++) {
             const x = limits.lower + i * segmentWidth + segmentWidth / 2
             const y = fnEval(x)
             approximation += segmentWidth * y
             if (doVisualization) {
+                touchPoints.push([x, y])
                 const newVertices = [
                     [x - segmentWidth / 2, 0],
                     [x - segmentWidth / 2, y],
@@ -29,24 +31,24 @@ const integration = {
             points: vertices[id].length > 0 ? [...vertices[id], vertices[id][0]] : [],
             graphType: 'polyline'
         })
-        const touchPoints = Array(segments).fill().map((_, i) => {
-            const x = limits.lower + i * segmentWidth + segmentWidth / 2
-            return [x, fnEval(x)]
-        })
-        return { integralOdd: integral('odd'), integralEven: integral('even'), touchPoints, approximation }
+        return { integral, touchPoints, approximation }
     },
     trapezoidal: (limits, segments, segmentWidth, doVisualization) => {
         const vertices = { odd: [], even: [] }
+        const touchPoints = []
         let approximation = 0
         for (let i = 0; i < segments; i++) {
             const leftX = limits.lower + i * segmentWidth
             const rightX = leftX + segmentWidth
-            approximation += segmentWidth / 2 * (fnEval(leftX) + fnEval(rightX))
+            const leftY = fnEval(leftX)
+            const rightY = fnEval(rightX)
+            approximation += segmentWidth / 2 * (leftY + rightY)
             if (doVisualization) {
+                touchPoints.push([leftX, leftY])
                 const newVertices = [
                     [leftX, 0],
-                    [leftX, fnEval(leftX)],
-                    [rightX, fnEval(rightX)],
+                    [leftX, leftY],
+                    [rightX, rightY],
                     [rightX, 0],
                 ]
                 if (i % 2 === 0) vertices.even.push(...newVertices)
@@ -55,30 +57,34 @@ const integration = {
         }
 
         if (!doVisualization) return { approximation }
-
+        touchPoints.push([limits.upper, fnEval(limits.upper)])
         const integral = (id) => ({
             fnType: 'points',
             attr: { id: `integral-${id}`, class: 'trapezoidal' },
             points: vertices[id].length > 0 ? [...vertices[id], vertices[id][0]] : [],
             graphType: 'polyline'
         })
-        const touchPoints = Array(segments + 1).fill().map((_, i) => {
-            const x = limits.lower + i * segmentWidth
-            return [x, fnEval(x)]
-        })
-        return { integralOdd: integral('odd'), integralEven: integral('even'), touchPoints, approximation }
+        return { integral, touchPoints, approximation }
     },
     simpsons: (limits, segments, segmentWidth, doVisualization) => {
         let approximation = 0
+        const touchPoints = []
         for (let i = 0; i < segments; i++) {
             const leftX = limits.lower + i * segmentWidth
             const rightX = leftX + segmentWidth
             const middleX = (leftX + rightX) / 2
-            approximation += segmentWidth / 6 * (fnEval(leftX) + 4 * fnEval(middleX) + fnEval(rightX))
+            const leftY = fnEval(leftX)
+            const middleY = fnEval(middleX)
+            const rightY = fnEval(rightX)
+            approximation += segmentWidth / 6 * (leftY + 4 * middleY + rightY)
+            if (doVisualization) {
+                touchPoints.push([leftX, leftY])
+                touchPoints.push([middleX, middleY])
+            }
         }
 
         if (!doVisualization) return { approximation }
-
+        touchPoints.push([limits.upper, fnEval(limits.upper)])
         const simpsonsFunctions = Array(segments).fill().map((_, i) => {
             const halfInterval = segmentWidth / 2
             const leftX = limits.lower + i * segmentWidth
@@ -106,11 +112,7 @@ const integration = {
             range: [limits.lower, limits.upper],
             closed: true,
         })
-        const touchPoints = Array(segments * 2 + 1).fill().map((_, i) => {
-            const x = limits.lower + (i / 2) * segmentWidth
-            return [x, fnEval(x)]
-        })
-        return { integralOdd: integral('odd'), integralEven: integral('even'), touchPoints, approximation }
+        return { integral, touchPoints, approximation }
     },
     gauss: (limits, segments, _, doVisualization) => {
         const { x, w } = computeGaussAbscissas(segments, limits.lower, limits.upper)
@@ -121,30 +123,30 @@ const integration = {
             const y = fnEval(x[i])
             approximation += w[i] * y
 
-            if (!doVisualization) continue
-            touchPoints.push([x[i], y])
-            const width = w[i]
-            const leftX = x[i] - width / 2
-            const rightX = x[i] + width / 2
-            const newVertices = [
-                [leftX, 0],
-                [leftX, y],
-                [rightX, y],
-                [rightX, 0],
-            ]
-            if (i % 2 === 0) vertices.even.push(...newVertices)
-            else vertices.odd.push(...newVertices)
+            if (doVisualization) {
+                touchPoints.push([x[i], y])
+                const width = w[i]
+                const leftX = x[i] - width / 2
+                const rightX = x[i] + width / 2
+                const newVertices = [
+                    [leftX, 0],
+                    [leftX, y],
+                    [rightX, y],
+                    [rightX, 0],
+                ]
+                if (i % 2 === 0) vertices.even.push(...newVertices)
+                else vertices.odd.push(...newVertices)
+            }
         }
 
+        if (!doVisualization) return { approximation }
         const integral = (id) => ({
             fnType: 'points',
             attr: { id: `integral-${id}`, class: 'gauss' },
             points: vertices[id].length > 0 ? [...vertices[id], vertices[id][0]] : [],
             graphType: 'polyline'
         })
-
-        if (!doVisualization) return { approximation }
-        return { integralOdd: integral('odd'), integralEven: integral('even'), touchPoints, approximation }
+        return { integral, touchPoints, approximation }
     }
 }
 
@@ -163,11 +165,11 @@ export const integrate = () => {
     const doVisualization = options.segments <= 100
     const getResults = integration[options.integrationMethod]
     const args = [options.limits, options.segments, segmentWidth, doVisualization]
-    const { integralOdd, integralEven, touchPoints, approximation } = getResults(...args)
+    const { integral, touchPoints, approximation } = getResults(...args)
 
     if (doVisualization) {
-        graph('integral-odd').set(integralOdd)
-        graph('integral-even').set(integralEven)
+        graph('integral-odd').set(integral('odd'))
+        graph('integral-even').set(integral('even'))
         graph('touch-points').update('points', touchPoints)
     } else {
         graph('integral-odd').set({

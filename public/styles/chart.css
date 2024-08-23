@@ -67,7 +67,7 @@
 #touch-points {
     fill: white;
     stroke: #8b8b8b;
-    stroke-width: 3px;
+    stroke-width: 2px;
     opacity: 1;
 }
 
@@ -77,4 +77,18 @@
     stroke-dasharray: 30 20;
     stroke-linecap: round;
     opacity: 1;
+}
+
+@media screen and (max-width: 800px) {
+    .inner-tip circle, .inner-tip text {
+        font-size: 15px;
+    }
+
+    .tick text {
+        font-size: 12px;
+    }
+
+    .limit-label {
+        font-size: 15px;
+    }
 }

@@ -51,6 +51,8 @@ function getD3Scale(type: 'linear' | 'log') {
   return d3ScaleLog
 }
 
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+
 /**
  * An instance can subscribe to any of the following events by doing `instance.on([eventName], callback)`,
  * events can be triggered by doing `instance.emit([eventName][, params])`
@@ -304,8 +306,10 @@ export class Chart extends EventEmitter.EventEmitter {
     this.buildAxisLabel()
 
     // helper to detect the closest fn to the cursor's current abscissa
-    const tip = (this.tip = mousetip(Object.assign(this.options.tip || {}, { owner: this })))
-    this.canvas.merge(this.canvas.enter).call(tip)
+    if (!isMobile) {
+      const tip = (this.tip = mousetip(Object.assign(this.options.tip || {}, { owner: this })))
+      this.canvas.merge(this.canvas.enter).call(tip)
+    }
 
     this.setUpPlugins()
 
@@ -727,7 +731,7 @@ export class Chart extends EventEmitter.EventEmitter {
 
     type EventsWithListener = { [key: string]: (...args: any[]) => any }
 
-    const eventsThisInstance: EventsWithListener = {
+    const tipEvents: EventsWithListener = isMobile ? {} : {
       mousemove: function (coordinates: { x: number; y: number }) {
         self.tip.move(coordinates)
       },
@@ -738,8 +742,11 @@ export class Chart extends EventEmitter.EventEmitter {
 
       mouseout: function () {
         self.tip.hide()
-      },
+      }
+    }
 
+    const eventsThisInstance: EventsWithListener = {
+      ...tipEvents,
       zoom: function zoom({ transform }: any) {
         // disable zoom
         if (self.options.disableZoom) return

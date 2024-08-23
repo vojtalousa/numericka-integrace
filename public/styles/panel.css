@@ -17,14 +17,18 @@
     border: 2px solid #46464647;
 }
 
-.limit-inputs {
+.limit-inputs-outer {
     display: flex;
     flex-direction: row;
     gap: 10px;
 }
 
-.limit-inputs input[type="number"] {
+.limit-inputs-outer input[type="number"] {
     margin-bottom: 4px;
+}
+
+.limit-inputs-inner {
+    flex-grow: 1;
 }
 
 label, .label {
@@ -40,6 +44,16 @@ input[type="range"] {
     appearance: none;
     background: transparent;
     cursor: pointer;
+}
+
+select {
+    -webkit-appearance: initial;
+    -moz-appearance: initial;
+    appearance: initial;
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 12px);
+    background-position-y: center;
+    background-image: url(/img/select.svg);
 }
 
 input[type="text"], input[type="number"], select, .result-text {
@@ -58,8 +72,20 @@ input[type="text"], input[type="number"], select, .result-text {
     margin: 0 0 8px 0;
 }
 
-#error {
-    margin-bottom: 2px;
+.result-text {
+    display: flex;
+    align-items: center;
+}
+
+.result-text p {
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.result-text:last-child {
+    margin-bottom: 3px;
 }
 
 .has-unit {
@@ -71,6 +97,7 @@ input[type="text"], input[type="number"], select, .result-text {
     content: url('/img/unit.svg');
     position: absolute;
     right: 8px;
+    height: 21px;
 }
 
 #open-options-button {
@@ -90,39 +117,27 @@ input[type="text"], input[type="number"], select, .result-text {
     margin-right: 5px;
 }
 
-.options.open {
+.panel.open {
     display: block;
 }
 
 @media screen and (max-width: 800px) {
     .panels-container {
-        top: 0;
+        top: unset;
         right: 0;
         left: 0;
         bottom: 0;
         width: 100%;
         pointer-events: none;
+        gap: 0;
     }
 
     .panel {
+        display: none;
         padding: 15px 15px;
         border-width: 1px;
         border-radius: 0;
         pointer-events: all;
-    }
-
-    .results-container {
-        position: absolute;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
-
-    .options {
-        display: none;
     }
 
     #open-options-button {
@@ -140,5 +155,11 @@ input[type="text"], input[type="number"], select, .result-text {
 
     input[type="text"], input[type="number"], select, .result-text {
         font-size: 16px;
+    }
+
+    .result-text {
+        height: 37px;
+        padding-top: 0;
+        padding-bottom: 0;
     }
 }
