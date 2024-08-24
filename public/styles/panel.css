@@ -53,7 +53,7 @@ select {
     background-repeat: no-repeat;
     background-position-x: calc(100% - 12px);
     background-position-y: center;
-    background-image: url(/img/select.svg);
+    background-image: url(/images/select.svg);
 }
 
 input[type="text"], input[type="number"], select, .result-text {
@@ -94,7 +94,7 @@ input[type="text"], input[type="number"], select, .result-text {
 }
 
 .has-unit:after {
-    content: url('/img/unit.svg');
+    content: url(/images/unit.svg);
     position: absolute;
     right: 8px;
     height: 21px;
