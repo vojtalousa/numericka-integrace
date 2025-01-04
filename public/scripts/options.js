@@ -1,4 +1,5 @@
 import { draw, graph, options, setAnnotations } from "./chart.js";
+import mathjs from '/dist/math-js-integral.js'
 import { integrate } from "./integration.js";
 
 const form = document.getElementById('options-form');

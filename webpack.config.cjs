@@ -35,13 +35,29 @@ module.exports = [
     {
         mode: 'production',
         entry: './math-js-integral/index.js',
+        experiments: {
+            outputModule: true,
+        },
         output: {
             path: dist,
             filename: 'math-js-integral.js',
             library: {
-                name: 'mathjs',
-                type: 'var',
-                export: 'default'
+                type: 'module'
+            }
+        },
+        optimization: { usedExports: true }
+    },
+    {
+        mode: 'production',
+        entry: './methods/index.js',
+        experiments: {
+            outputModule: true,
+        },
+        output: {
+            path: dist,
+            filename: 'integration-methods.js',
+            library: {
+                type: 'module'
             }
         },
         optimization: { usedExports: true }

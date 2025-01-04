@@ -1,3 +1,5 @@
+import mathjs from '/dist/math-js-integral.js'
+
 export const options = {
     fn: 'x^3 + 2x^2 - 3x + 1',
     segments: 2,
@@ -84,7 +86,13 @@ const chartOptions = {
     data: chartData
 }
 
-export const fnEval = (x) => functionPlot.$eval.builtIn({ fn: options.fn }, 'fn', { x })
+export const fnEval = (x) => {
+    const result = functionPlot.$eval.builtIn({ fn: options.fn }, 'fn', { x }) || 0
+    if (Number.isNaN(result)) return 0
+    else if (result === Infinity) return Number.MAX_SAFE_INTEGER
+    else if (result === -Infinity) return Number.MIN_SAFE_INTEGER
+    return result
+}
 export const chart = functionPlot(chartOptions);
 export const draw = () => {
     chart.options = chartOptions
