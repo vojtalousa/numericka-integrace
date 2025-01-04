@@ -2,7 +2,7 @@
   "name": "numericka-integrace",
   "version": "1.0.0",
   "scripts": {
-    "build": "npx rimraf public/dist && webpack",
+    "build": "cd function-plot && npm install && cd ../math-js-integral && npm install && cd .. && npx rimraf public/dist && webpack",
     "dev": "webpack-dev-server"
   },
   "devDependencies": {
