@@ -7,7 +7,8 @@ export const options = {
     limits: {
         lower: -2,
         upper: 2
-    }
+    },
+    visualizationLimit: 100,
 }
 options.integralFn = mathjs.integrate(options.fn, 'x').toString()
 
@@ -99,6 +100,17 @@ export const draw = () => {
     chart.draw()
 }
 export const setAnnotations = (annotations) => chartOptions.annotations = annotations
+export const setDomain = (xDomain, yDomain) => {
+    chartOptions.x.domain = xDomain
+    chartOptions.y.domain = yDomain
+    chart.meta.zoomBehavior.xScale.domain(xDomain)
+    chart.meta.zoomBehavior.yScale.domain(yDomain)
+    chart.build()
+}
+export const setInteraction = (enabled) => {
+    chartOptions.disableZoom = !enabled
+    chart.build()
+}
 export const graph = (id) => {
     const index = chartOptions.data.findIndex(d => d.attr.id === id)
     if (index === -1) throw new Error(`Graph with id ${id} not found`)

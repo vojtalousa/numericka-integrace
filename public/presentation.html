@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Interactive Numerical Integration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/panel.css">
+    <link rel="stylesheet" href="styles/chart.css">
+    <link rel="stylesheet" href="styles/presentation.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicons/32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicons/96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicons/16.png">
+    <link rel="icon" type="image/svg+xml" sizes="any" href="images/favicons/any.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicons/180.png">
+</head>
+<body>
+<div id="chart" class="chart hideable"></div>
+<div class="panels-container hideable">
+    <button id="open-options-button">Open Options</button>
+    <form class="options panel" id="options-form">
+        <label for="function-input">Function</label>
+        <input type="text" name="function" id="function-input">
+        <label for="segments-input">Segments</label>
+        <input type="number" min="1" name="segments" id="segments-input">
+        <label for="integration-method">Integration method</label>
+        <select id="integration-method" name="method">
+            <option value="midpoint">Midpoint</option>
+            <option value="trapezoidal">Trapezoidal</option>
+            <option value="simpsons">Simpson's</option>
+            <option value="gauss">Gauss-Legendre</option>
+            <option value="montecarlo">Monte-Carlo</option>
+        </select>
+        <div class="limit-inputs-outer">
+            <div class="limit-inputs-inner">
+                <label for="limit-lower">Lower limit</label>
+                <input type="number" step="any" name="lower" id="limit-lower">
+            </div>
+            <div class="limit-inputs-inner">
+                <label for="limit-upper">Upper limit</label>
+                <input type="number" step="any" name="upper" id="limit-upper">
+            </div>
+        </div>
+    </form>
+    <div class="results panel open" id="results">
+        <p class="label">Approximation Result</p>
+        <div class="result-text has-unit"><p id="approximation"></p></div>
+        <p class="label">Actual Result</p>
+        <div class="result-text has-unit"><p id="result"></p></div>
+        <p class="label">Relative Error</p>
+        <div class="result-text"><p id="error"></p></div>
+    </div>
+</div>
+<div id="presentation">
+    <h1 id="title">Title</h1>
+    <div id="text"></div>
+</div>
+<script src="dist/function-plot.js"></script>
+<script src="scripts/chart.js" type="module"></script>
+<script src="scripts/integration.js" type="module"></script>
+<script src="scripts/options.js" type="module"></script>
+<script src="scripts/draggable.js" type="module"></script>
+<script src="scripts/presentation.js" type="module"></script>
+</body>
+</html>

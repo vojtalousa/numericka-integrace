@@ -16,7 +16,7 @@ const convertScientific = (number) => {
 }
 export const integrate = () => {
     const segmentWidth = (options.limits.upper - options.limits.lower) / options.segments
-    const doVisualization = options.segments <= 100
+    const doVisualization = options.segments <= options.visualizationLimit
     const getResults = integrationMethods[options.integrationMethod]
     const args = [options.limits, options.segments, segmentWidth, doVisualization]
     const { integral, touchPoints, approximation } = getResults(...args)

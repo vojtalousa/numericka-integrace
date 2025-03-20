@@ -40,9 +40,9 @@ export const changeLimit = (defaultId, x, originIsInput = false) => {
     changeValue(id, x)
     setAnnotations([{ x: options.limits.lower }, { x: options.limits.upper }])
 }
-const changes = {
+export const changes = {
     segments: (value) => {
-        if (parseInt(value) > 100) inputs.segments.setCustomValidity('Visualization disabled')
+        if (parseInt(value) > options.visualizationLimit) inputs.segments.setCustomValidity('Visualization disabled')
         else inputs.segments.setCustomValidity('')
         options.segments = parseInt(value)
         inputs.segments.reportValidity()
@@ -86,6 +86,14 @@ Array.from(inputs).forEach(input => {
         draw()
     })
 })
+
+export const sync = () => {
+    inputs.function.value = options.fn
+    inputs.segments.value = options.segments
+    inputs.method.value = options.integrationMethod
+    inputs.lower.value = options.limits.lower
+    inputs.upper.value = options.limits.upper
+}
 
 let optionsOpen = false
 const results = document.getElementById('results')
